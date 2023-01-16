@@ -20,9 +20,9 @@ limitations under the License.
 
 UValidation_Level_NDisplay_Mesh_FullPrecisionUVs::UValidation_Level_NDisplay_Mesh_FullPrecisionUVs()
 {
-	ValidationName = "NDisplay - Full Precision UVs";
-	ValidationDescription = "Any meshes which are being used to build nDisplay setups need to be imported into unreal with full precision UVs";
-	FixDescription = "Artist will need to enable full precision UVs for any meshes which are part of nDisplay setups and reimport";
+	ValidationName = TEXT("NDisplay - 최대 정확도 UVs");
+	ValidationDescription = TEXT("nDisplay를 구성하는 데 사용되는 모든 메시는 최대 UV로 임포트해야 합니다.");
+	FixDescription = TEXT("작업자는 nDisplay를 구성하는데 사용된 모든 메시의 최대 정확도 UV 설정을 체크 후 다시 임포트해야 합니다.");
 	ValidationScope = EValidationScope::Level;
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX
@@ -45,7 +45,7 @@ FValidationResult UValidation_Level_NDisplay_Mesh_FullPrecisionUVs::Validation_I
 #if PLATFORM_MAC
 	FValidationResult ValidationResult = FValidationResult();
 	ValidationResult.Result = EValidationStatus::Warning;
-	ValidationResult.Message = "Ndisplay Validations Not Valid On OSX";
+	ValidationResult.Message = UValidationTranslation::NoOSX();
 	return ValidationResult;
 #endif
 }
@@ -73,7 +73,7 @@ FValidationFixResult UValidation_Level_NDisplay_Mesh_FullPrecisionUVs::Fix_Imple
 #if PLATFORM_MAC
 	FValidationFixResult ValidationFixResult = FValidationFixResult();
 	ValidationFixResult.Result = EValidationFixStatus::NotFixed;
-	ValidationFixResult.Message = "Ndisplay Validations Not Valid On OSX";
+	ValidationFixResult.Message = UValidationTranslation::NoOSX();
 	return ValidationFixResult;
 #endif
 }
@@ -86,7 +86,7 @@ EValidationStatus UValidation_Level_NDisplay_Mesh_FullPrecisionUVs::ValidateFull
 	const FStaticMeshSourceModel& LODModel = StaticMesh->GetSourceModel(LodIndex);
 	if (!LODModel.BuildSettings.bUseFullPrecisionUVs)
 	{
-		FString ActorError = StaticMesh->GetPathName() + " Has Use Full PrecisionUVs For LOD " + FString::FromInt(LodIndex) +" Disabled - Manually Enable\n";
+		FString ActorError = StaticMesh->GetPathName() + TEXT(" 메쉬의 LOD ") + FString::FromInt(LodIndex) + TEXT(" 번이 최대 정확도 UV 옵션이 비활성화 되어 있습니다. 수동으로 설정하세요\n");
 		Message += ActorError;
 		return EValidationStatus::Fail;
 		

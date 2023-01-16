@@ -17,14 +17,25 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UMG/Public/Blueprint/UserWidget.h"
-#include "ValidationListWidget.generated.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "Validation_Translation.generated.h"
 
-/**
- * A simple base class we can use to extend via blueprint to build out the lists of validations which we want to execute
-*/
-UCLASS()
-class VALIDATIONFRAMEWORK_API UValidationListWidget final: public UUserWidget
+UCLASS(Blueprintable)
+class VALIDATIONFRAMEWORK_API UValidationTranslation : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+
+public:
+
+	UFUNCTION(BlueprintCallable,  Category="Validation Translation Support")
+	static FString const Valid()
+	{
+		return TEXT("확인");
+	}
+
+	UFUNCTION(BlueprintCallable,  Category="Validation Translation Support")
+	static FString const NoOSX()
+	{
+		return TEXT("NDisplay 유효성 검증은 OSX에서 동작하지 않습니다.");
+	}
 };

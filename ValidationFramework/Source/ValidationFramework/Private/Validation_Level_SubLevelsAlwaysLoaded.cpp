@@ -1,4 +1,4 @@
-/**
+﻿/**
 Copyright 2022 Netflix, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,9 +22,9 @@ limitations under the License.
 
 UValidation_Level_SubLevelsAlwaysLoaded::UValidation_Level_SubLevelsAlwaysLoaded()
 {
-	ValidationName = "SubLevels - Always Loaded";
-	ValidationDescription = "Working in Virtual Production any SubLevels need to have their Streaming Method set to Always Loaded";
-	FixDescription = "Sets any SubLevels to have their Streaming Method set to Always Loaded";
+	ValidationName = TEXT("서브레벨 항상 로딩");
+	ValidationDescription = TEXT("VP 프로젝트 작업 시 모든 서브레벨의 설정이 항상 로드됨으로 되어있어야 합니다.");
+	FixDescription = TEXT("모든 서브레벨의 로딩 설정을 항상 로드됨으로 설정");
 	ValidationScope = EValidationScope::Level;
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX,
@@ -57,11 +57,11 @@ FValidationResult UValidation_Level_SubLevelsAlwaysLoaded::Validation_Implementa
 
 	if (ValidationResult.Result == EValidationStatus::Pass)
 	{
-		ValidationResult.Message = "Valid";
+		ValidationResult.Message = UValidationTranslation::Valid();
 	}
 	else
 	{
-		ValidationResult.Message = "Error - The Following Sub Levels Are Not Set To Always Loaded\n" + Message;
+		ValidationResult.Message = TEXT("에러 - 다음 서브레벨들의 설정이 항상 로드됨으로 설정되어 있지 않음\n") + Message;
 	}
 	return ValidationResult;
 }
@@ -88,7 +88,7 @@ FValidationFixResult UValidation_Level_SubLevelsAlwaysLoaded::Fix_Implementation
 				UEditorLevelUtils::SetStreamingClassForLevel(
 					StreamingLevel, ULevelStreamingAlwaysLoaded::StaticClass());
 				FName PackageName = StreamingLevel->GetWorldAssetPackageFName();
-				Message += PackageName.ToString() + " Set To Always Loaded\n";
+				Message += PackageName.ToString() + TEXT(" 항상 로드됨으로 설정\n");
 				
 			}
 		}

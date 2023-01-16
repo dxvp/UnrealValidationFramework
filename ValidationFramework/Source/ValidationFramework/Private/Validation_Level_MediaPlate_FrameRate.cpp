@@ -28,9 +28,9 @@ limitations under the License.
 
 UValidation_Level_MediaPlate_FrameRate::UValidation_Level_MediaPlate_FrameRate()
 {
-	ValidationName = "MediaPlate Frame Rate";
-	ValidationDescription = "Ensures that the MediaPlate sources are set to a compatible shooting rate";
-	FixDescription = "Sets the FrameRate of the ImgMediaSource to match the project settings, and ensures DX12 loaded";
+	ValidationName = TEXT("미디어플레이트 프레임레이트");
+	ValidationDescription = TEXT("미디어플레이트 소스가 호환 가능한 촬영 속도로 설정되었는지 확인함");
+	FixDescription = TEXT("프로젝트 설정과 일치하도록 ImgMediaSource의 프레임레이트를 설정하고 DX12를 사용하도록 설정합니다.");
 	ValidationScope = EValidationScope::Level,
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX,
@@ -71,7 +71,7 @@ TArray<UImgMediaSource*> UValidation_Level_MediaPlate_FrameRate::GetAllMediaSour
 FValidationResult UValidation_Level_MediaPlate_FrameRate::Validation_Implementation()
 {
 	FValidationResult ValidationResult = UValidation_Project_DX12::Validation_Implementation();
-	FString Message = "";
+	FString Message = TEXT("");
 
 	if (ValidationResult.Result == EValidationStatus::Pass)
 	{
@@ -82,7 +82,7 @@ FValidationResult UValidation_Level_MediaPlate_FrameRate::Validation_Implementat
 	if (Settings == nullptr)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		ValidationResult.Message += "\nNo Validation Framework Settings In Project";
+		ValidationResult.Message += TEXT("\n프로젝트에 유효성 검사 플러그인 설정파일이 존재하지 않음");
 		return ValidationResult;
 	}
 
@@ -99,7 +99,7 @@ FValidationResult UValidation_Level_MediaPlate_FrameRate::Validation_Implementat
 		if (Compatible == EFrameRateComparisonStatus::InValid)
 		{
 			ValidationResult.Result = EValidationStatus::Fail;
-			ValidationResult.Message += "\nInCompatible Frame Rate Set In ImageMediaSource Asset\n" + ImgMediaSource->GetPathName();
+			ValidationResult.Message += TEXT("\nImageMediaSource 에셋에 설정된 프레임레이트와 프로젝트 설정이 일치하지 않음\n") + ImgMediaSource->GetPathName();
 		}
 
 		if (Compatible == EFrameRateComparisonStatus::ValidMultiple)
@@ -108,18 +108,17 @@ FValidationResult UValidation_Level_MediaPlate_FrameRate::Validation_Implementat
 			{
 				ValidationResult.Result = EValidationStatus::Warning;
 			}
-			ValidationResult.Message += "\nFrame Rate Set In ImageMediaSource Asset Is Compatible Multiple. "
-										"This May Be Intentional " + ImgMediaSource->GetPathName();;
+			ValidationResult.Message += TEXT("\nImageMediaSource 에셋에 설정된 프레임레이트와 같지 않으나 호환되는 프레임레이트임. (24/48 or 30/60 같은) 의도한 설정일 수 있음") + ImgMediaSource->GetPathName();
 		}
 	}
 
 	if (ValidationResult.Result == EValidationStatus::Pass)
 	{
-		ValidationResult.Message = "Valid";
+		ValidationResult.Message = UValidationTranslation::Valid();
 	}
 	else
 	{
-		Message += "\nUnable To Determine Frame Rates Of Sequences Needs Manually Setting\n";
+		Message += TEXT("\n설정이 필요한 시퀀스의 프레임 속도를 자동으로 결정할 수 없음. 작업자의 직접 수정 필요\n");
 		ValidationResult.Message += Message;
 	}
 	
@@ -135,7 +134,7 @@ FValidationFixResult UValidation_Level_MediaPlate_FrameRate::Fix_Implementation(
 	if (ValidationResult.Result  != EValidationStatus::Pass)
 	{
 		ValidationFixResult.Result = EValidationFixStatus::ManualFix;
-		ValidationFixResult.Message = "Unable To Determine Frame Rates Of Sequences Needs Manually Setting\n";
+		ValidationFixResult.Message = TEXT("설정이 필요한 시퀀스의 프레임 속도를 자동으로 결정할 수 없음. 작업자의 직접 수정 필요\n");
 	}
 	
 	

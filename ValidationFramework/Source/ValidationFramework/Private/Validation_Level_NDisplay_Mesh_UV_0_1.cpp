@@ -22,10 +22,9 @@ limitations under the License.
 
 UValidation_Level_NDisplay_Mesh_UV_0_1::UValidation_Level_NDisplay_Mesh_UV_0_1()
 {
-	ValidationName = "NDisplay - Check UVs 0 To 1";
-	ValidationDescription = "Any meshes which are being used to build nDisplay setups should have their UVs in a 0-1 UV Space. "
-							"Verts which fall outside of 0-1 UV space will cause issues and artifacts with nDisplay";
-	FixDescription = "No Fix available artists will need to reimport the meshes with correct UVs";
+	ValidationName = TEXT("NDisplay 메쉬의 UV 범위 0-1 확인");
+	ValidationDescription = TEXT("nDisplay를 구축하는데 사용되는 메시의 UV는 0-1 공간에 있어야 합니다. 0-1 UV 공간 밖에 있는 버텍스는 nDisplay에 문제 및 아티팩트를 일으킵니다.");
+	FixDescription = TEXT("아티스트가 직접 UV공간을 0-1 범위에 맞게 메쉬를 수정 후 다시 임포트해야합니다.");
 	ValidationScope = EValidationScope::Level;
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX
@@ -48,7 +47,7 @@ FValidationResult UValidation_Level_NDisplay_Mesh_UV_0_1::Validation_Implementat
 #if PLATFORM_MAC
 	FValidationResult ValidationResult = FValidationResult();
 	ValidationResult.Result = EValidationStatus::Warning;
-	ValidationResult.Message = "Ndisplay Validations Not Valid On OSX";
+	ValidationResult.Message = UValidationTranslation::NoOSX();
 	return ValidationResult;
 #endif
 }
@@ -76,7 +75,7 @@ FValidationFixResult UValidation_Level_NDisplay_Mesh_UV_0_1::Fix_Implementation(
 #if PLATFORM_MAC
 	FValidationFixResult ValidationFixResult = FValidationFixResult();
 	ValidationFixResult.Result = EValidationFixStatus::NotFixed;
-	ValidationFixResult.Message = "Ndisplay Validations Not Valid On OSX";
+	ValidationFixResult.Message = UValidationTranslation::NoOSX();
 	return ValidationFixResult;
 #endif
 }
@@ -104,7 +103,7 @@ EValidationStatus UValidation_Level_NDisplay_Mesh_UV_0_1::ValidateUVs(UStaticMes
 			if (UVPosition.X > 1 || UVPosition.X < 0 || UVPosition.Y > 1 || UVPosition.Y < 0)
 			{
 				Result = EValidationStatus::Fail;
-				Message += StaticMesh->GetPathName() + " LOD " + FString::FromInt(LodIndex) + " Has UVs In Channel " + FString::FromInt(UV) + " Outside 0-1 Space\n";
+				Message += StaticMesh->GetPathName() + " LOD " + FString::FromInt(LodIndex) + TEXT(" 메쉬의 채널 ") + FString::FromInt(UV) + TEXT(" 번 UVs 범위가 0-1 밖입니다.\n");
 				break;
 			}
 			

@@ -21,10 +21,9 @@ limitations under the License.
 
 UValidation_Level_NDisplay_Mesh_LightmapUVs::UValidation_Level_NDisplay_Mesh_LightmapUVs()
 {
-	ValidationName = "NDisplay - Check No LightMap UVs";
-	ValidationDescription = "Any meshes which are being used to build nDisplay setups should not have light map generated UV channels. "
-							"nDisplay Meshes should only have 2 UV Channels and additional LightMap UVs can cause confusion";
-	FixDescription = "No Fix available artists will need to reimport the meshes with Generate LightMap UVs Disabled";
+	ValidationName = TEXT("NDisplay - 라이트맵 UV 유무 확인");
+	ValidationDescription = TEXT("nDisplay를 구성하는 데 사용되는 모든 메시에는 라이트맵 UV 채널이 없어야 합니다. 메시에는 2개의 UV 채널만 있어야 하며 추가된 UV는 비주얼 상 문제를 일으킬 수 있습니다.");
+	FixDescription = TEXT("작업자가 직접 라이트맵 UV가 비활성화된 메쉬로 다시 임포트해야 합니다.");
 	ValidationScope = EValidationScope::Level;
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX
@@ -47,7 +46,7 @@ FValidationResult UValidation_Level_NDisplay_Mesh_LightmapUVs::Validation_Implem
 #if PLATFORM_MAC
 	FValidationResult ValidationResult = FValidationResult();
 	ValidationResult.Result = EValidationStatus::Warning;
-	ValidationResult.Message = "Ndisplay Validations Not Valid On OSX";
+	ValidationResult.Message = UValidationTranslation::NoOSX();
 	return ValidationResult;
 #endif
 }
@@ -75,7 +74,7 @@ FValidationFixResult UValidation_Level_NDisplay_Mesh_LightmapUVs::Fix_Implementa
 #if PLATFORM_MAC
 	FValidationFixResult ValidationFixResult = FValidationFixResult();
 	ValidationFixResult.Result = EValidationFixStatus::NotFixed;
-	ValidationFixResult.Message = "Ndisplay Validations Not Valid On OSX";
+	ValidationFixResult.Message = UValidationTranslation::NoOSX();
 	return ValidationFixResult;
 #endif
 }
@@ -85,7 +84,7 @@ EValidationStatus UValidation_Level_NDisplay_Mesh_LightmapUVs::ValidateLightmapU
 	const FStaticMeshSourceModel& LODModel = StaticMesh->GetSourceModel(LodIndex);
 	if (LODModel.BuildSettings.bGenerateLightmapUVs)
 	{
-		Message = StaticMesh->GetPathName() + " LOD " + FString::FromInt(LodIndex) + " Has Lightmap UV Generation Enabled - Should Disable & Reimport\n";
+		Message = StaticMesh->GetPathName() + " LOD " + FString::FromInt(LodIndex) + TEXT(" 번 메쉬의 라이트맵 UV가 활성화되어 있습니다. 비활성화 후 다시 임포트가 필요합니다.\n");
 		return EValidationStatus::Fail;
 	}
 

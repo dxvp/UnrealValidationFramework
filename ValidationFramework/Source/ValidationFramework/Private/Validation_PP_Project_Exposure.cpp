@@ -1,4 +1,4 @@
-/**
+﻿/**
 Copyright 2022 Netflix, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,10 +21,10 @@ limitations under the License.
 
 UValidation_PP_Project_Exposure::UValidation_PP_Project_Exposure()
 {
-	ValidationName = "PP - Disable Auto Exposure";
-	ValidationDescription = "This is to ensure that we disable auto exposure and ensure it is set to Manual fo ICVFX "
-							"as not to break the color pipeline";
-	FixDescription = "Disables auto exposure, sets auto exposure to be manual and sets the bias to 0";
+	ValidationName = 		TEXT("포스트 프로세스 - 자동 노출 끄기");
+	ValidationDescription = TEXT("자동 노출을 비활성화하고 컬러 파이프라인을 방해하지 않도록 ICVFX에서 노출이 수동으로 설정되었는지 확인하기 위한 것입니다");
+	FixDescription = 		TEXT("자동 노출을 비활성화하고 수동으로 설정, 바이어스를 0으로 설정합니다.");
+
 	ValidationScope = EValidationScope::Project;
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX
@@ -34,33 +34,33 @@ UValidation_PP_Project_Exposure::UValidation_PP_Project_Exposure()
 FValidationResult UValidation_PP_Project_Exposure::Validation_Implementation()
 {
 	FValidationResult ValidationResult = FValidationResult(EValidationStatus::Pass, "");
-	FString Message = "";
+	FString Message = TEXT("");
 
 	const URendererSettings* Settings = GetMutableDefault<URendererSettings>();
 	if (Settings->bDefaultFeatureAutoExposure)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		Message += "Auto Exposure Is Turned On In Project Settings\n";
+		Message += "프로젝트 설정에서 자동 노출이 활성화 되어 있음.\n";
 		
 	}
 
 	if (Settings->DefaultFeatureAutoExposure != EAutoExposureMethodUI::AEM_Manual)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		Message += "Auto Exposure Is Not Set To Manual In Project Settings\n";
+		Message += "프로젝트 설정에서 자동 노출이 수동으로 설정되지 않음\n";
 		
 	}
 	
 	if (Settings->DefaultFeatureAutoExposureBias != 0.0)
     {
     	ValidationResult.Result = EValidationStatus::Fail;
-    	Message += "Auto Exposure Bias Should Be Set To 0.0\n";
+    	Message += "자동 노출의 값은 0으로 설정되어 있어야 합니다.\n";
     	
     }
 
 	if (ValidationResult.Result == EValidationStatus::Pass)
 	{
-		Message = "Valid";
+		Message = UValidationTranslation::Valid();
 	}
 	
 	ValidationResult.Message = Message;
@@ -69,27 +69,27 @@ FValidationResult UValidation_PP_Project_Exposure::Validation_Implementation()
 
 FValidationFixResult UValidation_PP_Project_Exposure::Fix_Implementation() 
 {
-	FString Message = "";
+	FString Message = TEXT("");
 
 	URendererSettings* Settings = GetMutableDefault<URendererSettings>();
 	if (Settings->bDefaultFeatureAutoExposure)
 	{
 		Settings->bDefaultFeatureAutoExposure = false;
-		Message += "Auto Exposure Turned Off In Project Settings\n";
+		Message += "자동 노출이 프로젝트 설정에서 꺼져 있음\n";
 		
 	}
 
 	if (Settings->DefaultFeatureAutoExposure != EAutoExposureMethodUI::AEM_Manual)
 	{
 		Settings->DefaultFeatureAutoExposure = EAutoExposureMethodUI::AEM_Manual;
-		Message += "Auto Exposure Set To Manual In Project Settings\n";
+		Message += "자동 노출이 프로젝트 설정에서 수동으로 설정되 있음\n";
 		
 	}
 	
 	if (Settings->DefaultFeatureAutoExposureBias != 0.0)
 	{
 		Settings->DefaultFeatureAutoExposureBias = 0.0;
-		Message += "Auto Exposure Bias Set To 0.0\n";
+		Message += "자동 노출의 값이 0으로 설정되어 있음\n";
     	
 	}
 	Settings->SaveConfig();

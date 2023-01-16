@@ -20,11 +20,9 @@ limitations under the License.
 
 UValidation_Level_NDisplay_Mesh_2UVChannels::UValidation_Level_NDisplay_Mesh_2UVChannels()
 {
-	ValidationName = "NDisplay - Check 2 UV Channels";
-	ValidationDescription = "Any meshes which are being used to build nDisplay setups need to have two UV channels."
-							"We do not check the UVs are correct but at least check to ensure its not been missed, "
-							"See unreal docs for detailed info";
-	FixDescription = "No Fix available for this as will need to be fixed manually by the artists";
+	ValidationName = TEXT("NDisplay - UV채널 2개 확인");
+	ValidationDescription = TEXT("nDisplay를 구성하는데 사용되는 모든 메시에는 두개의 UV 채널이 있어야 합니다. UV가 정확한지 확인하지는 않지만 최소한 누락되지는 않았는지 확인합니다.");
+	FixDescription = TEXT("작업자가 직접 메쉬를 수정 후 다시 임포트해야 합니다");
 	ValidationScope = EValidationScope::Level;
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX
@@ -43,7 +41,7 @@ FValidationResult UValidation_Level_NDisplay_Mesh_2UVChannels::Validation_Implem
 
 	if (Result.Result == EValidationStatus::Fail)
 	{
-		Result.Message += "Ensure LightMass UV Auto Generation Is Off & Meshes Have 2 UV Channels Only";
+		Result.Message += TEXT("LightMass UV 자동 생성이 꺼져 있고, 메시에 2개의 UV 채널만 있는지 확인 필요");
 	}
 	
 	return Result;
@@ -52,7 +50,7 @@ FValidationResult UValidation_Level_NDisplay_Mesh_2UVChannels::Validation_Implem
 #if PLATFORM_MAC
 	FValidationResult ValidationResult = FValidationResult();
 	ValidationResult.Result = EValidationStatus::Warning;
-	ValidationResult.Message = "Ndisplay Validations Not Valid On OSX";
+	ValidationResult.Message = UValidationTranslation::NoOSX();
 	return ValidationResult;
 #endif
 }
@@ -73,7 +71,7 @@ FValidationFixResult UValidation_Level_NDisplay_Mesh_2UVChannels::Fix_Implementa
 	{
 		Result.Result = EValidationFixStatus::ManualFix;
 		Result.Message = VResult.Message;
-		Result.Message += "Ensure LightMass UV Auto Generation Is Off & Meshes Have 2 UV Channels Only";
+		Result.Message += TEXT("LightMass UV 자동 생성이 꺼져 있고, 메시에 2개의 UV 채널만 있는지 확인");
 	}
 	return Result;
 #endif
@@ -81,7 +79,7 @@ FValidationFixResult UValidation_Level_NDisplay_Mesh_2UVChannels::Fix_Implementa
 #if PLATFORM_MAC
 	FValidationFixResult ValidationFixResult = FValidationFixResult();
 	ValidationFixResult.Result = EValidationFixStatus::NotFixed;
-	ValidationFixResult.Message = "Ndisplay Validations Not Valid On OSX";
+	ValidationFixResult.Message = UValidationTranslation::NoOSX();
 	return ValidationFixResult;
 #endif
 }
@@ -91,7 +89,7 @@ EValidationStatus UValidation_Level_NDisplay_Mesh_2UVChannels::ValidateMeshesWit
 	const int NumUVChannels = StaticMesh->GetNumUVChannels(LodIndex);
 	if (NumUVChannels != 2)
 	{
-		Message = StaticMesh->GetPathName() + " LOD " + FString::FromInt(LodIndex) + " Has " + FString::FromInt(NumUVChannels) +" UV Channels Instead Of 2\n";
+		Message = StaticMesh->GetPathName() + " LOD " + FString::FromInt(LodIndex) + TEXT(" 메시에 UV 채널이 두 개가 아닌 ") + FString::FromInt(NumUVChannels) + TEXT(" 개가 있음\n");
 		return EValidationStatus::Fail;
 	}
 

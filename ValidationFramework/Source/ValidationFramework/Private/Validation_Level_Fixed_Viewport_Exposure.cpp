@@ -21,9 +21,9 @@ limitations under the License.
 
 UValidation_Level_Fixed_Viewport_Exposure::UValidation_Level_Fixed_Viewport_Exposure()
 {
-	ValidationName = "Fixed Viewport Exposure";
-	ValidationDescription = "Having A Fixed Viewport Exposure Overrides The Exposure Setup From Within The Level";
-	FixDescription = "Sets The EV100 value to 1.0 and disables the setting so we revert to using the game logic";
+	ValidationName = TEXT("에디터 뷰포트 노출 고정 설정 해제");
+	ValidationDescription = TEXT("에디터 뷰포트 노출 설정값이 있으면 레벨의 포스트프로세스의 노출값을 덮어쓰는 문제가 있음.");
+	FixDescription = TEXT("EV100 값을 1.0으로 설정하고 설정을 비활성화하여 인게임 로직을 사용하도록 되돌립니다.");
 	ValidationScope = EValidationScope::Level;
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX,
@@ -39,13 +39,13 @@ FValidationResult UValidation_Level_Fixed_Viewport_Exposure::Validation_Implemen
 	if (Client->ExposureSettings.bFixed)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		ValidationResult.Message = "There Is A Fixed Exposure Being Driven By The Viewport";
+		ValidationResult.Message = TEXT("뷰포트에 설정된 고정 노출값이 있습니다.");
 	}
 	
 
 	if (ValidationResult.Result == EValidationStatus::Pass)
 	{
-		ValidationResult.Message = "Valid";
+		ValidationResult.Message = UValidationTranslation::Valid();
 	}
 	return ValidationResult;
 }

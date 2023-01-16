@@ -26,12 +26,9 @@ limitations under the License.
 
 UValidation_Level_ICVFXConfig_ColorGrading::UValidation_Level_ICVFXConfig_ColorGrading()
 {
-	ValidationName = "NDisplay - Color Grading";
-	ValidationDescription = "This is to ensure that we do not have invalid settings on the color grading for the ICVFX "
-							"entire cluster and per viewport as not to break the color pipeline, the existing post "
-							"processing validations already check the ICVFX camera for additional invalid post processing"
-							" setting";
-	FixDescription = "Disables blue correction and expand gamut for both entire cluster and per viewport";
+	ValidationName = TEXT("NDisplay - 컬러그레이딩");
+	ValidationDescription = TEXT("ICVFX의 컬러 그레이딩 파이프라인에 잘못된 설정이 없도록 전체 클러스터 및 뷰포트별, ICVFX 카메라에 잘못된 포스트프로세싱 설정이 있는지 확인합니다.");
+	FixDescription = TEXT("Blue Correction을 비활성화하고 클러스터/뷰포트의 색역 확장(Expand Gamut)을 비활성화함.");
 	ValidationScope = EValidationScope::Level;
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX
@@ -47,34 +44,34 @@ void UValidation_Level_ICVFXConfig_ColorGrading::ValidateEntireClusterColorGradi
 		if (StageSettings.EntireClusterColorGrading.ColorGradingSettings.AutoExposureBias != 0.0)
 		{
 			Result.Result = EValidationStatus::Warning;
-			ActorMessages += "Entire Cluster Exposure Compensation Enabled & Not 0.0 Could Be Artistic Choice\n";
+			ActorMessages += TEXT("전체 뷰포트의 노출 보정 활성화 및 0.0이 아님. 작업자가 의도한 것일 수 있음 \n");
 		}
 	}
 	
 	if (StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.bOverride_BlueCorrection)
 	{
 		Result.Result = EValidationStatus::Fail;
-		ActorMessages += "Entire Cluster Blue Correction Enabled\n";
+		ActorMessages += TEXT("전체 뷰포트의 Blue Correction이 활성화 되어 있음\n");
 			
 	}
 
 	if (StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.BlueCorrection != 0.0)
 	{
 		Result.Result = EValidationStatus::Fail;
-		ActorMessages += "Entire Cluster Blue Correction Not Set To 0.0\n";
+		ActorMessages += TEXT("전체 뷰포트의 Blue Correction이 0.0으로 설정되어 있지 않음\n");
 	}
 
 	if (StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.bOverride_ExpandGamut)
 	{
 		Result.Result = EValidationStatus::Fail;
-		ActorMessages += "Entire Cluster Expand Gamut Enabled\n";
+		ActorMessages += TEXT("색역 확장이 활성화 되어 있음\n");
 			
 	}
 
 	if (StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.ExpandGamut != 0.0)
 	{
 		Result.Result = EValidationStatus::Fail;
-		ActorMessages += "Entire Cluster Expand Gamut Not Set To 0.0\n";
+		ActorMessages += TEXT("색역 확장 설정값이 0.0이 아님\n");
 			
 	}
 }
@@ -94,7 +91,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::ValidatePerViewPortColorGrading
 				Result.Result = EValidationStatus::Warning;
 				ActorMessages += FString::Format
 				(
-					TEXT( "PerViewportColorGrading {0} Exposure Compensation Enabled & Not 0.0 Could Be Ariststic Choice\n" ), Args
+					TEXT("뷰포트 {0}번의 노출 보정이 활성화되어 있거나 값이 0.0이 아님. 작업자가 의도한 것일 수 있음\n" ), Args
 				);
 				
 			}
@@ -105,7 +102,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::ValidatePerViewPortColorGrading
 			Result.Result = EValidationStatus::Fail;
 			ActorMessages += FString::Format
 			(
-				TEXT( "PerViewportColorGrading {0} Blue Correction Enabled\n" ), Args
+				TEXT("뷰포트 {0} 번의 Blue Correction이 활성화 되어 있음\n" ), Args
 			);
 		}
 
@@ -114,7 +111,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::ValidatePerViewPortColorGrading
 			Result.Result = EValidationStatus::Fail;
 			ActorMessages += FString::Format
 			(
-				TEXT( "PerViewportColorGrading {0} Blue Correction Not Set To 0.0\n" ), Args
+				TEXT( "뷰포트 {0} 번의 Blue Correction값이 0.0이 아님\n" ), Args
 			);
 		}
 
@@ -123,7 +120,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::ValidatePerViewPortColorGrading
 			Result.Result = EValidationStatus::Fail;
 			ActorMessages += FString::Format
 			(
-				TEXT( "PerViewportColorGrading {0} Expand Gamut Enabled\n" ), Args
+				TEXT( "뷰포트 {0} 번의 색역 확장이 활성화 되어 있음\n" ), Args
 			);
 		}
 
@@ -132,7 +129,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::ValidatePerViewPortColorGrading
 			Result.Result = EValidationStatus::Fail;
 			ActorMessages += FString::Format
 			(
-				TEXT( "PerViewportColorGrading {0} Expand Gamut Not Set To 0.0\n" ), Args
+				TEXT( "뷰포트 {0} 번의 색역 확장 설정값이 0.0이 아님\n" ), Args
 			);
 		}
 	}
@@ -158,7 +155,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::ValidateInnerFrustumColorGradin
 		{
 			Result.Result = EValidationStatus::Fail;
 			ActorMessages += FString::Format(
-				TEXT("{0}\nBlue Correction Is Enabled For Inner Frustum Color Grading & Not Set To 0.0\n"),
+				TEXT("{0}\n카메라의 이너프러스텀 Blue Correction이 활성화 되어 있음. 0.0으로 설정되어야 함.\n"),
 				Args
 			);
 		}
@@ -167,7 +164,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::ValidateInnerFrustumColorGradin
 		{
 			Result.Result = EValidationStatus::Fail;
 			ActorMessages += FString::Format(
-				TEXT("{0}\nExpand Gamut Is Enabled For Inner Frustum Color Grading & Not Set To 0.0\n"),
+				TEXT("{0}\n카메라의 이너프러스텀 색역 확장이 활성화 되어 있음. 0.0으로 설정되어야 함.\n"),
 				Args
 			);
 		}
@@ -180,27 +177,27 @@ void UValidation_Level_ICVFXConfig_ColorGrading::FixEntireClusterColorGrading(
 	if (StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.bOverride_BlueCorrection)
 	{
 		StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.bOverride_BlueCorrection = false;
-		ActorMessages += "Entire Cluster Blue Correction Disabled\n";
+		ActorMessages += TEXT("전체 뷰포트의 Blue Correction이 비활성화됨\n");
 			
 	}
 
 	if (StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.BlueCorrection != 0.0)
 	{
 		StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.BlueCorrection = 0.0;
-		ActorMessages += "Entire Cluster Blue Correction Set To 0.0\n";
+		ActorMessages += TEXT("전체 뷰포트의 Blue Correction을 0.0으로 설정함\n");
 	}
 
 	if (StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.bOverride_ExpandGamut)
 	{
 		StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.bOverride_ExpandGamut = false;
-		ActorMessages += "Entire Cluster Expand Gamut Disabled\n";
+		ActorMessages += TEXT("전체 뷰포트의 색역 확장을 비활성화홤\n");
 			
 	}
 
 	if (StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.ExpandGamut != 0.0)
 	{
 		StageSettings.EntireClusterColorGrading.ColorGradingSettings.Misc.ExpandGamut = 0.0;
-		ActorMessages += "Entire Cluster Expand Gamut Set To 0.0\n";
+		ActorMessages += TEXT("전체 뷰포트의 색역 확장값을 0.0으로 설정함\n");
 	}
 }
 
@@ -216,7 +213,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::FixPerViewportColorGrading(FStr
 			StageSettings.PerViewportColorGrading[x].ColorGradingSettings.Misc.bOverride_BlueCorrection = false;
 			ActorMessages += FString::Format
 			(
-				TEXT( "PerViewportColorGrading {0} Blue Correction Disabled\n" ), Args
+				TEXT( "뷰포트 {0} 번의 Blue Correction을 비활성화함\n" ), Args
 			);
 				
 		}
@@ -226,7 +223,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::FixPerViewportColorGrading(FStr
 			StageSettings.PerViewportColorGrading[x].ColorGradingSettings.Misc.BlueCorrection = 0.0;
 			ActorMessages += FString::Format
 			(
-				TEXT( "PerViewportColorGrading {0} Blue Correction Set To 0.0\n" ), Args
+				TEXT( "뷰포트 {0} 번의 Blue Correction값을 0.0으로 설정함\n" ), Args
 			);
 				
 		}
@@ -236,7 +233,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::FixPerViewportColorGrading(FStr
 			StageSettings.PerViewportColorGrading[x].ColorGradingSettings.Misc.bOverride_ExpandGamut = false;
 			ActorMessages += FString::Format
 			(
-				TEXT( "PerViewportColorGrading {0} Expand Gamut Disabled\n" ), Args
+				TEXT( "뷰포트 {0} 번의 색역 확장을 비활성화함\n" ), Args
 			);
 				
 		}
@@ -246,7 +243,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::FixPerViewportColorGrading(FStr
 			StageSettings.PerViewportColorGrading[x].ColorGradingSettings.Misc.ExpandGamut = 0.0;
 			ActorMessages += FString::Format
 			(
-				TEXT( "PerViewportColorGrading {0} Expand Gamut Set To 0.0\n" ), Args
+				TEXT( "뷰포트 {0} 번의 색역 확장값을 0.0으로 설정함\n" ), Args
 			);
 		}
 			
@@ -275,7 +272,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::FixInnerFrustumColorGrading(
 			IcvfxCameraComponent->CameraSettings.AllNodesColorGrading.ColorGradingSettings.Misc.bOverride_BlueCorrection = false;
 			IcvfxCameraComponent->CameraSettings.AllNodesColorGrading.ColorGradingSettings.Misc.BlueCorrection = 0.0;
 			ActorMessages += FString::Format(
-				TEXT("{0}\nBlue Correction Is Disabled For Inner Frustum Color Grading & Set To 0.0\n"),
+				TEXT("{0}\n 카메라의 이너프러스텀 Blue Correction을 비활성화하고 0.0으로 설정함\n"),
 				Args
 			);
 		}
@@ -286,7 +283,7 @@ void UValidation_Level_ICVFXConfig_ColorGrading::FixInnerFrustumColorGrading(
 			IcvfxCameraComponent->CameraSettings.AllNodesColorGrading.ColorGradingSettings.Misc.bOverride_ExpandGamut = false;
 			IcvfxCameraComponent->CameraSettings.AllNodesColorGrading.ColorGradingSettings.Misc.ExpandGamut = 0.0;
 			ActorMessages += FString::Format(
-				TEXT("{0}\nExpand Gamut Is Disabled For Inner Frustum Color Grading & Set To 0.0\n"),
+				TEXT("{0}\n 카메라의 이너프러스텀 색역 확장을 비활성화하고 0.0으로 설정함\n"),
 				Args
 			);
 		}
@@ -337,7 +334,7 @@ FValidationResult UValidation_Level_ICVFXConfig_ColorGrading::Validation_Impleme
 #if PLATFORM_MAC
 	FValidationResult ValidationResult = FValidationResult();
 	ValidationResult.Result = EValidationStatus::Warning;
-	ValidationResult.Message = "Ndisplay Validations Not Valid On OSX";
+	ValidationResult.Message = UValidationTranslation::NoOSX();
 	return ValidationResult;
 #endif
 }
@@ -381,7 +378,7 @@ FValidationFixResult UValidation_Level_ICVFXConfig_ColorGrading::Fix_Implementat
 	#if PLATFORM_MAC
 		FValidationFixResult ValidationFixResult = FValidationFixResult();
 		ValidationFixResult.Result = EValidationFixStatus::NotFixed;
-		ValidationFixResult.Message = "Ndisplay Validations Not Valid On OSX";
+		ValidationFixResult.Message = UValidationTranslation::NoOSX();
 		return ValidationFixResult;
 	#endif
 }

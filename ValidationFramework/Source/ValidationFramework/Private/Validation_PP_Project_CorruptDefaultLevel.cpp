@@ -22,10 +22,11 @@ limitations under the License.
 
 UValidation_PP_Project_CorruptDefaultLevel::UValidation_PP_Project_CorruptDefaultLevel()
 {
-	ValidationName = "Corrupt Default Game & Editor Level";
-	ValidationDescription = "Sometimes it is possible to set the default levels to an asset which is no longer in the "
-							"project, this then crashes NDisplay";
-	FixDescription = "Needs a manual fix from the artist as we do not know what their default levels should be.";
+	ValidationName = TEXT("프로젝트 기본 레벨 설정 깨짐");
+
+	ValidationDescription = TEXT("가끔 기본 레벨 설정이 사라져서 없는 경우 NDisplay가 터지는 문제가 있습니다.");
+
+	FixDescription = TEXT("작업자가 직접 프로젝트 설정에 들어가 기본 레벨을 설정해 주어야 합니다.");
 	ValidationScope = EValidationScope::Project;
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX
@@ -44,7 +45,7 @@ FValidationResult UValidation_PP_Project_CorruptDefaultLevel::Validation_Impleme
 		const bool bGameMapExists = UEditorAssetLibrary::DoesAssetExist(DefaultGameMap);
 		if(!bGameMapExists){
 			ValidationResult.Result = EValidationStatus::Fail;
-			Message += "The GameDefaultMap Is Set To An Asset Which Does Not Exist In The Project\n";
+			Message += TEXT("기본 인게임 맵 설정이 프로젝트에 존재하지 않습니다.\n");
 			
 		}
 	}
@@ -56,18 +57,18 @@ FValidationResult UValidation_PP_Project_CorruptDefaultLevel::Validation_Impleme
 		const bool bEditorMapExists = UEditorAssetLibrary::DoesAssetExist(EditorStartupMapString);
 		if(!bEditorMapExists){
 			ValidationResult.Result = EValidationStatus::Fail;
-			Message += "The EditorStartupMap Is Set To An Asset Which Does Not Exist In The Project\n";
+			Message += TEXT("기본 에디터 시작 맵 설정이 프로젝트에 존재하지 않습니다.\n");
 			
 		}
 	}
 
 	if (ValidationResult.Result == EValidationStatus::Pass)
 	{
-		ValidationResult.Message = "Valid";
+		ValidationResult.Message = UValidationTranslation::Valid();
 	}
 	else
 	{
-		ValidationResult.Message = "Error -Needs A Manual Fix\n" + Message;
+		ValidationResult.Message = TEXT("에러 - 사용자가 직접 설정이 필요함\n") + Message;
 	}
 	return ValidationResult;
 }
@@ -76,6 +77,6 @@ FValidationFixResult UValidation_PP_Project_CorruptDefaultLevel::Fix_Implementat
 {
 	FValidationFixResult ValidationFixResult = FValidationFixResult();
 	ValidationFixResult.Result = EValidationFixStatus::ManualFix;
-	FString Message = "Needs manual fix as we do not know what the default levels should be";
+	FString Message = TEXT("기본 레벨이 설정되어 있지 않아 직접 설정이 필요함");
 	return ValidationFixResult;
 }

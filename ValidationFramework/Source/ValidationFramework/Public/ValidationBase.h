@@ -1,4 +1,4 @@
-/**
+﻿/**
 Copyright 2022 Netflix, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +19,7 @@ limitations under the License.
 #include "CoreMinimal.h"
 #include "ValidationCommon.h"
 #include "EditorUtilityTask.h"
+#include "Validation_Translation.h"
 #include "ValidationBase.generated.h"
 
 

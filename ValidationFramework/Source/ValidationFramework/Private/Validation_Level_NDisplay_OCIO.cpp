@@ -31,10 +31,9 @@ limitations under the License.
 
 UValidation_Level_NDisplay_OCIO::UValidation_Level_NDisplay_OCIO()
 {
-	ValidationName = "NDisplay - OCIO Setup";
-	ValidationDescription = "OCIO ensures we have a color managed workflow, having mismatching or missing OCIO configs leads to content appearing incorrect";
-	FixDescription = "Requires a manual fix as is often dependent on the make up of the led volumes, walls/viewports "
-				  "may need different ocio configs which is not trivial to describe at this point";
+	ValidationName = TEXT("NDisplay - OCIO 설정");
+	ValidationDescription = TEXT("OCIO는 색상 관리 워크플로우를 보장합니다. OCIO 설정이 맞지 않거나 누락되면 콘텐츠의 색이 다르게 표현됩니다.");
+	FixDescription = TEXT("LED와 스튜디오 장비 구성에 따라 원인과 해결법이 명확하지 않아 사용자가 직접 언리얼 엔진의 설정이나 LED 프로세서의 설정 수정이 필요하기도 합니다.");
 	ValidationScope = EValidationScope::Level;
 	ValidationApplicableWorkflows = {
 		EValidationWorkflow::ICVFX,
@@ -60,7 +59,7 @@ void UValidation_Level_NDisplay_OCIO::ValidateOCIOColorConversionSettings(
 		{
 			ValidationResult.Result = Status;	
 		}
-		ValidationResult.Message += OCIOObjectName + " Has A Different OCIO Config To Those In The Validation Project Settings\n";
+		ValidationResult.Message += OCIOObjectName + TEXT(" OCIO 설정이 프로젝트 유효성 검사 플러그인에 설정된 OCIO세팅과 일치하지 않음\n");
 	}
 
 	if (OCIOSettings2.SourceColorSpace != OCIOSettings1.SourceColorSpace)
@@ -69,7 +68,7 @@ void UValidation_Level_NDisplay_OCIO::ValidateOCIOColorConversionSettings(
 		{
 			ValidationResult.Result = Status;	
 		}
-		ValidationResult.Message += OCIOObjectName + " Has A Different Source Color Space To Those In The Validation Project Settings\n";
+		ValidationResult.Message += OCIOObjectName + TEXT(" 소스 컬러스페이스 설정이 프로젝트 유효성 검사 플러그인에 설정된 컬러스페이스와 일치하지 않음\n");
 		ValidationResult.Message += OCIOSettings2.SourceColorSpace.ToString() + " v " + OCIOSettings1.SourceColorSpace.ToString() + "\n";
 	}
 
@@ -79,14 +78,14 @@ void UValidation_Level_NDisplay_OCIO::ValidateOCIOColorConversionSettings(
 		{
 			ValidationResult.Result = Status;	
 		}
-		ValidationResult.Message += OCIOObjectName + " Has A Different Destination Color Space To Those In The Validation Project Settings\n";
+		ValidationResult.Message += OCIOObjectName + TEXT(" 출력 컬러스페이스 설정이 프로젝트 유효성 검사 플러그인에 설정된 컬러스페이스와 일치하지 않음\n");
 		ValidationResult.Message += OCIOSettings2.DestinationColorSpace.ToString() + " v " + OCIOSettings1.DestinationColorSpace.ToString() + "\n";
 	}
 			
 	if (OCIOSettings2.DestinationDisplayView != OCIOSettings1.DestinationDisplayView)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		ValidationResult.Message += OCIOObjectName + " Has A Different Destination Display View To Those In The Validation Project Settings\n";
+		ValidationResult.Message += OCIOObjectName + TEXT(" 디스플레이 뷰 설정이 프로젝트 유효성 검사 플러그인에 설정된 디스플레이 뷰 설정과 일치하지 않음\n");
 		ValidationResult.Message += OCIOSettings2.DestinationDisplayView.ToString() + " v " + OCIOSettings1.DestinationDisplayView.ToString() + "\n";
 	}
 }
@@ -99,7 +98,7 @@ void UValidation_Level_NDisplay_OCIO::ValidateAllViewportOCIOSetups(
 	if (!StageSettings.bUseOverallClusterOCIOConfiguration)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		ValidationResult.Message += OCIOObjectName +"\nUse OCIO Config For All Viewports Not Enabled\n";
+		ValidationResult.Message += OCIOObjectName + TEXT("\n모든 NDisplay 뷰포트에 OCIO를 사용하도록 설정되어 있지 않음\n");
 	}
 		
 	FOpenColorIOColorConversionSettings AllViewPortsOCIOSettings = StageSettings.
@@ -110,7 +109,7 @@ void UValidation_Level_NDisplay_OCIO::ValidateAllViewportOCIOSetups(
 	if (!AllViewPortsOCIOSettings.IsValid())
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		ValidationResult.Message += OCIOObjectName +"\nAll Viewports OCIO Config Asset, Is Not Set or Has Sources or Destinations Which Do Not Exist In The OCIO Config File\n";
+		ValidationResult.Message += OCIOObjectName + TEXT("\n모든 뷰포트에 OCIO설정이 되어 있지 않거나 설정 파일에 소스나 디스플레이 컬러가 설정되어 있지 않음\n");
 	
 	}
 	else
@@ -141,9 +140,9 @@ void UValidation_Level_NDisplay_OCIO::ValidatePerViewportOCIOOverrideSetups(
 			{
 					
 				ValidationResult.Result = EValidationStatus::Fail;
-				ValidationResult.Message += OCIOObjectName +"\nPer Viewports OCIO Config Index " +
+				ValidationResult.Message += OCIOObjectName + TEXT("\n뷰포트 ") +
 					FString::FromInt(Viewport_Idx) + 
-					" Asset, Is Not Set or Has Sources or Destinations Which Do Not Exist In The OCIO Config File\n";
+					TEXT(" 번의 개별 OCIO 설정파일이 존재하지 않거나 소스/디스플레이 컬러스페이스 설정이 되어 있지 않습니다\n");
 	
 			}
 			else
@@ -158,9 +157,9 @@ void UValidation_Level_NDisplay_OCIO::ValidatePerViewportOCIOOverrideSetups(
 			{
 				ValidationResult.Result = EValidationStatus::Warning;
 			}
-			ValidationResult.Message += OCIOObjectName +"\nPer Viewports OCIO Config Index " +
+			ValidationResult.Message += OCIOObjectName + TEXT("\n뷰포트 ") +
 				FString::FromInt(Viewport_Idx) + 
-				" Exists But Not Enabled\n";
+				TEXT(" 번의 OCIO 설정이 되어있지만 활성화되지 않았습니다\n");
 				
 		}
 	}
@@ -173,7 +172,7 @@ void UValidation_Level_NDisplay_OCIO::ValidateInnerFrustumOCIOSetups(
 	if (!Icvfx_CameraSettings.AllNodesOCIOConfiguration.bIsEnabled)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		ValidationResult.Message += ComponentName + "\nInner Frustum OCIO Is Not Enabled\n";
+		ValidationResult.Message += ComponentName + TEXT("\n이너프러스텀의 OCIO 설정이 되어있지 않음\n");
 	}
 	FOpenColorIOColorConversionSettings InnerFrustumOCIOConfig = Icvfx_CameraSettings
 		.AllNodesOCIOConfiguration
@@ -183,7 +182,7 @@ void UValidation_Level_NDisplay_OCIO::ValidateInnerFrustumOCIOSetups(
 	if (!InnerFrustumOCIOConfig.IsValid())
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		ValidationResult.Message += ComponentName +"\nInner Frustum OCIO Config Asset, Is Not Set or Has Sources or Destinations Which Do Not Exist In The OCIO Config File\n";
+		ValidationResult.Message += ComponentName + TEXT("\n이너프러스텀의 OCIO 설정이 되어 있지 않거나, OCIO설정 파일에 소스 혹은 디스플레이 컬러스페이스 설정이 존재하지 않음\n");
 	
 	}
 	else
@@ -206,9 +205,9 @@ void UValidation_Level_NDisplay_OCIO::ValidateInnerFrustumOCIOPerNodeSetups(
 			{
 				ValidationResult.Result = EValidationStatus::Warning;	
 			}
-			ValidationResult.Message += ComponentName + "\nInner Frustum OCIO Per Node Config " +
+			ValidationResult.Message += ComponentName + TEXT("\n렌더 노드 ") +
 				FString::FromInt(PerNodeIndex) + 
-				" Exists But Is Not Enabled\n";
+				TEXT(" 번의 노드당 개별 이너프러스텀 OCIO 설정이 존재하지만 적용되지 않았습니다.\n");
 		}
 		else
 		{
@@ -220,9 +219,9 @@ void UValidation_Level_NDisplay_OCIO::ValidateInnerFrustumOCIOPerNodeSetups(
 			if (!InnerFrustumPerNodeOCIOConfig.IsValid())
 			{
 				ValidationResult.Result = EValidationStatus::Fail;
-				ValidationResult.Message += ComponentName +"\nInner Frustum OCIO Per Node Config "
+				ValidationResult.Message += ComponentName +	TEXT("\n렌더 노드 ")
 					+ FString::FromInt(PerNodeIndex)
-					+ ", Asset Is Not Set or Has Sources or Destinations Which Do Not Exist In The OCIO Config File\n";
+					+ TEXT("번의 노드당 개별 이너프러스텀 OCIO 설정의 소스/디스플레이 컬러스페이스가 설정되어 있지 않거나 OCIO 파일이 존재하지 않음\n");
 	
 			}
 			else
@@ -250,7 +249,7 @@ FValidationResult UValidation_Level_NDisplay_OCIO::Validation_Implementation()
 	if (Settings == nullptr)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		ValidationResult.Message += "\nNo Validation Framework Settings In Project";
+		ValidationResult.Message += "\n유효성 검사 플러그인의 사전 설정파일이 설정되지 않음";
 		return ValidationResult;
 	}
 
@@ -260,8 +259,7 @@ FValidationResult UValidation_Level_NDisplay_OCIO::Validation_Implementation()
 	if (!ProjectOCIOSettings.IsValid())
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		ValidationResult.Message += "\nValidation Framework Project OCIO Config Asset Is Not Set, or Has Sources or "
-			"Destinations Which Do Not Exist In The OCIO Config File\nUnable To Validate Or Fix";
+		ValidationResult.Message += TEXT("\n유효성 검사 플러그인 설정에 OCIO 파일이 설정되지 않았거나 소스/사전 컬러스페이스가 설정되지 않았거나,\nOCIO 설정파일이 존재하지 않아 유효성 검증 진행과 수정이 불가능함.");
 		return ValidationResult;
 		
 	}
@@ -294,11 +292,11 @@ FValidationResult UValidation_Level_NDisplay_OCIO::Validation_Implementation()
 
 	if (ValidationResult.Result ==  EValidationStatus::Pass)
 	{
-		ValidationResult.Message = "Valid";
+		ValidationResult.Message = UValidationTranslation::Valid();
 	}
 #else
 	ValidationResult.Result = EValidationStatus::Warning;
-	ValidationResult.Message = "NDisplay only supported on Linux and Windows"; 
+	ValidationResult.Message = TEXT("NDisplay는 리눅스 혹은 윈도우에서만 가능합니다");
 #endif
 
 	return ValidationResult;
@@ -313,16 +311,16 @@ FValidationFixResult UValidation_Level_NDisplay_OCIO::Fix_Implementation()
 	if (ValidationResult.Result == EValidationStatus::Pass)
 	{
 		ValidationFixResult.Result = EValidationFixStatus::Fixed;
-		ValidationFixResult.Message = "Nothing To Fix";
+		ValidationFixResult.Message = TEXT("설정이 완료됨");
 	}
 	else
 	{
 		ValidationFixResult.Result = EValidationFixStatus::ManualFix;
-		ValidationFixResult.Message = "Requires Manual Fix";
+		ValidationFixResult.Message = TEXT("사용자의 수동 설정이 필요함");
 	}
 #else
 	ValidationFixResult.Result = EValidationFixStatus::Fixed;
-	ValidationFixResult.Message = "Nothing To Fix";
+	ValidationFixResult.Message = TEXT("설정이 완료됨");
 #endif
 	
 	return ValidationFixResult;
