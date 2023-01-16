@@ -59,7 +59,7 @@ FValidationFixResult UValidation_Level_Fixed_Viewport_Exposure::Fix_Implementati
 	FString Message = "";
 
 	FEditorViewportClient* Client = static_cast<FEditorViewportClient*>(GEditor->GetActiveViewport()->GetClient());
-	Client->ExposureSettings.bFixed = true;
+	Client->ExposureSettings.bFixed = false;
 	Client->ExposureSettings.FixedEV100 = 1.0f;
 
 	ValidationFixResult.Message = Message;
