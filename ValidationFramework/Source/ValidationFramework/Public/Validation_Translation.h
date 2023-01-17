@@ -27,14 +27,14 @@ class VALIDATIONFRAMEWORK_API UValidationTranslation : public UBlueprintFunction
 
 public:
 
-	UFUNCTION(BlueprintCallable,  Category="Validation Translation Support")
-	static FString const Valid()
+	UFUNCTION(BlueprintPure, Category="Validation Translation Support")
+	static inline FString const Valid()
 	{
 		return TEXT("확인");
 	}
 
-	UFUNCTION(BlueprintCallable,  Category="Validation Translation Support")
-	static FString const NoOSX()
+	UFUNCTION(BlueprintPure, Category="Validation Translation Support")
+	static inline FString const NoOSX()
 	{
 		return TEXT("NDisplay 유효성 검증은 OSX에서 동작하지 않습니다.");
 	}
