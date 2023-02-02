@@ -43,6 +43,9 @@ public class ValidationFramework : ModuleRules
 				"SlateCore", "EditorScriptingUtilities", "UMG", "EngineSettings", "UMGEditor", 
 				"LevelSequence", "SettingsEditor", "SettingsEditor", "MediaPlate", "MediaAssets", "MediaUtils", 
 				"ImgMedia",
+				"DerivedDataCache",
+				"CinematicCamera",
+				"Niagara"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

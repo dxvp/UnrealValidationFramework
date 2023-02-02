@@ -40,21 +40,21 @@ FValidationResult UValidation_PP_Project_Exposure::Validation_Implementation()
 	if (Settings->bDefaultFeatureAutoExposure)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		Message += "프로젝트 설정에서 자동 노출이 활성화 되어 있음.\n";
+		Message += TEXT("프로젝트 설정에서 자동 노출이 활성화 되어 있음.\n");
 		
 	}
 
 	if (Settings->DefaultFeatureAutoExposure != EAutoExposureMethodUI::AEM_Manual)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
-		Message += "프로젝트 설정에서 자동 노출이 수동으로 설정되지 않음\n";
+		Message += TEXT("프로젝트 설정에서 자동 노출이 수동으로 설정되지 않음\n");
 		
 	}
 	
 	if (Settings->DefaultFeatureAutoExposureBias != 0.0)
     {
     	ValidationResult.Result = EValidationStatus::Fail;
-    	Message += "자동 노출의 값은 0으로 설정되어 있어야 합니다.\n";
+    	Message += TEXT("자동 노출의 값은 0으로 설정되어 있어야 합니다.\n");
     	
     }
 
@@ -75,21 +75,21 @@ FValidationFixResult UValidation_PP_Project_Exposure::Fix_Implementation()
 	if (Settings->bDefaultFeatureAutoExposure)
 	{
 		Settings->bDefaultFeatureAutoExposure = false;
-		Message += "자동 노출이 프로젝트 설정에서 꺼져 있음\n";
+		Message += TEXT("자동 노출이 프로젝트 설정에서 꺼져 있음\n");
 		
 	}
 
 	if (Settings->DefaultFeatureAutoExposure != EAutoExposureMethodUI::AEM_Manual)
 	{
 		Settings->DefaultFeatureAutoExposure = EAutoExposureMethodUI::AEM_Manual;
-		Message += "자동 노출이 프로젝트 설정에서 수동으로 설정되 있음\n";
+		Message += TEXT("자동 노출이 프로젝트 설정에서 수동으로 설정되 있음\n");
 		
 	}
 	
 	if (Settings->DefaultFeatureAutoExposureBias != 0.0)
 	{
 		Settings->DefaultFeatureAutoExposureBias = 0.0;
-		Message += "자동 노출의 값이 0으로 설정되어 있음\n";
+		Message += TEXT("자동 노출의 값이 0으로 설정되어 있음\n");
     	
 	}
 	Settings->SaveConfig();
