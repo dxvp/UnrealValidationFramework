@@ -45,7 +45,9 @@ public class ValidationFramework : ModuleRules
 				"ImgMedia",
 				"DerivedDataCache",
 				"CinematicCamera",
-				"Niagara"
+				"Niagara",
+				"MultiUserClient",
+				"Concert", "ConcertSyncClient",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

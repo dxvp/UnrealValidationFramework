@@ -54,6 +54,10 @@
 		{
 			"Name": "ImgMedia",
 			"Enabled": true
+		},
+		{
+			"Name": "Niagara",
+			"Enabled": true
 		}
 	]
 }

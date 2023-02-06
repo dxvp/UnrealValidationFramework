@@ -398,6 +398,12 @@ class UValidationBPLibrary final : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, Category="ValidationBPLibrary")
 	static EFrameRateComparisonStatus CompareFrameRateCompatability(FFrameRate FrameRate1, FFrameRate FrameRate2);
 
-	
-	
+	/**
+	* It Returns own current level's nDisplay Actor. 
+	* IF YOU HAVE MORE THAN ONE, RETURNS NULLPTR. MAKE SURE TO ALSO IT WORKS AS KINDA VALIDATION, AND EXCEPTION ON CODES
+	* @param World - The World
+	* @return Returns EFrameRateComparisonStatus which tells us if the frame rates are compatible
+	*/
+	UFUNCTION(BlueprintCallable, Category="ValidationBPLibrary")
+	static ADisplayClusterRootActor* const GetCurrentLevelNDisplayActor(const UWorld* World);
 };

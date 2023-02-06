@@ -1373,7 +1373,21 @@ EFrameRateComparisonStatus UValidationBPLibrary::CompareFrameRateCompatability(F
 	return EFrameRateComparisonStatus::Valid;
 }
 
+ADisplayClusterRootActor* const UValidationBPLibrary::GetCurrentLevelNDisplayActor(const UWorld* World)
+{
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(World, ADisplayClusterRootActor::StaticClass(), FoundActors);
 
+	if (FoundActors.Num() > 1)
+		return nullptr;
+
+	for (AActor* FoundActor : FoundActors)
+	{
+		return Cast<ADisplayClusterRootActor>(FoundActor);
+	}
+
+	return nullptr;
+};
 
  
 
