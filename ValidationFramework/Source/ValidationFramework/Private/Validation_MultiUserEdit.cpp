@@ -40,14 +40,7 @@ FValidationResult UValidation_MultiUserEdit::Validation_Implementation()
 	}
 	else
 	{
-		if (MUServer.IsConcertServerRunning())
-		{
-			return FValidationResult(EValidationStatus::Fail, TEXT("멀티유저 서버가 로컬에 존재하나 접속되지 않은 상태입니다."));
-		}
-		else
-		{
-			return FValidationResult(EValidationStatus::Fail, TEXT("멀티유저 서버가 로컬에 실행된 상태가 아니고, 접속되지 않습니다."));
-		}
+		return FValidationResult(EValidationStatus::Fail, TEXT("멀티유저 서버에 접속되지 않은 상태입니다."));
 	}
 }
 
@@ -56,5 +49,24 @@ FValidationFixResult UValidation_MultiUserEdit::Fix_Implementation()
 	IMultiUserClientModule& MUServer = IMultiUserClientModule::Get();
 	TSharedPtr<IConcertClientSession> Session = GetClientSession(MUServer);
 
-	return FValidationFixResult(EValidationFixStatus::Fixed, TEXT("수동으로 서버 설정 변경이 필요합니다. 현재 멀티유저 서버 접속 정보 :\n%s"));
+	if (!Session.IsValid())
+		return FValidationFixResult(EValidationFixStatus::NotFixed, *FString::Printf(TEXT("%hs: The ConcertSyncClient could not be found. Please check the output log for errors and try again."), __FUNCTION__));
+
+	if (Session->GetConnectionStatus() == EConcertConnectionStatus::Connected)
+	{
+		return FValidationFixResult(EValidationFixStatus::Fixed, TEXT("멀티유저서버에 접속된 상태입니다."));
+	}
+	else
+	{
+		FString Message = TEXT("수동으로 서버 설정 변경이 필요합니다\n");
+		if (MUServer.IsConcertServerRunning())
+		{
+			Message += TEXT("멀티유저 서버가 로컬에 존재하나 접속되지 않은 상태입니다.");
+		}
+		else
+		{
+			Message += TEXT("멀티유저 서버가 로컬에 실행된 상태가 아니고, 접속되지 않습니다.");
+		}
+		return FValidationFixResult(EValidationFixStatus::ManualFix, Message); 
+	}
 }

@@ -48,6 +48,7 @@ public class ValidationFramework : ModuleRules
 				"Niagara",
 				"MultiUserClient",
 				"Concert", "ConcertSyncClient",
+				"LiveLink", "LiveLinkInterface"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
