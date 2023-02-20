@@ -20,9 +20,9 @@ FValidationResult UValidation_Level_NDisplay_ZeroPoint::Validation_Implementatio
 		return FValidationResult(EValidationStatus::Fail, TEXT("레벨에 nDisplay 액터가 두개 이상 있습니다."));
 
 	FTransform tf = root->GetActorTransform();
-	if (tf.GetLocation().Equals(FVector::ZeroVector) && tf.GetRotation().Equals(FQuat::Identity))
+	if (tf.GetLocation().Equals(FVector::ZeroVector, 1.0f) && tf.GetRotation().Equals(FQuat::Identity, 1.0f))
 	{
-		FValidationResult(EValidationStatus::Pass, TEXT("nDisplay 액터가 제로포인트에 있습니다."));
+		return FValidationResult(EValidationStatus::Pass, TEXT("nDisplay 액터가 제로포인트에 있습니다."));
 	}
 
 	return FValidationResult(EValidationStatus::Fail, TEXT("nDisplay 액터가 제로포인트에 있지 않습니다."));

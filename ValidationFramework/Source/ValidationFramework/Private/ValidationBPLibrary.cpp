@@ -1062,7 +1062,7 @@ FValidationResult UValidationBPLibrary::NDisplayMeshSettingsValidation(
 		{
 			UStaticMesh* StaticMesh = StaticMeshComponent->GetStaticMesh();
 			const bool ExcludeMesh = ExcludeMeshFromNDisplayValidation(StaticMesh);
-			if (ExcludeMesh)
+			if (ExcludeMesh || !StaticMesh)
 			{
 				continue;
 			}

@@ -41,7 +41,7 @@ FValidationResult UValidation_Level_NDisplay_Mesh_2UVChannels::Validation_Implem
 
 	if (Result.Result == EValidationStatus::Fail)
 	{
-		Result.Message += TEXT("LightMass UV 자동 생성이 꺼져 있고, 메시에 2개의 UV 채널만 있는지 확인 필요");
+		Result.Message += TEXT("메시에 2개의 UV 채널만 있는지 확인 필요");
 	}
 	
 	return Result;

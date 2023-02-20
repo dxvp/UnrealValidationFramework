@@ -63,5 +63,5 @@ FValidationFixResult UValidation_LiveLink::Fix_Implementation()
 		return FValidationFixResult(EValidationFixStatus::ManualFix, TEXT("프로젝트 기본 라이브링크 프리셋의 수동 설정이 필요합니다"));
 	}
 
-	return FValidationFixResult(EValidationFixStatus::ManualFix, TEXT("라이브링크 연결이 되지 않은 상태인 경우 수동으로 설정 필요합니다."));
+	return FValidationFixResult(EValidationFixStatus::ManualFix, TEXT("라이브링크 연결이 되지 않은 상태인 경우 수동으로 설정이 필요합니다."));
 }
