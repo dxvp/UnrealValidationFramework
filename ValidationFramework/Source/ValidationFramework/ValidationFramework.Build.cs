@@ -41,7 +41,7 @@ public class ValidationFramework : ModuleRules
 				"Projects",
 				"TimeManagement",
 				"SlateCore", "EditorScriptingUtilities", "UMG", "EngineSettings", "UMGEditor", 
-				"LevelSequence", "SettingsEditor", "SettingsEditor", "MediaPlate", "MediaAssets", "MediaUtils", 
+				"LevelSequence", "SettingsEditor", "SettingsEditor", "MediaPlate", "MediaAssets", "MediaUtils", "ToolMenus",
 				"ImgMedia",
 				"DerivedDataCache",
 				"CinematicCamera",

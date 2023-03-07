@@ -1,4 +1,4 @@
-﻿/**
+/**
 Copyright Epic Games, Inc. All Rights Reserved.
 Copyright 2022 Netflix, Inc.
 
@@ -29,6 +29,7 @@ limitations under the License.
 #include "EditorAssetLibrary.h"
 #include "EditorUtilitySubsystem.h"
 #include "Interfaces/IPluginManager.h"
+#include "ToolMenu.h"
 
 #define LOCTEXT_NAMESPACE "FValidationFrameworkModule"
 
@@ -52,16 +53,33 @@ void FValidationFrameworkModule::StartupModule()
 			GetMutableDefault<UVFProjectSettingsEditor>());
 	}
 
-	// Add And Register The Menu
-	FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
-	const TSharedPtr<FExtender> MenuExtender = MakeShareable(new FExtender());
-	MenuExtender->AddMenuExtension(
-		"LevelEditor",
-		EExtensionHook::After,
-		nullptr,
-		FMenuExtensionDelegate::CreateRaw(this, &FValidationFrameworkModule::AddMenuEntry));
-	LevelEditorModule.GetMenuExtensibilityManager()->AddExtender(MenuExtender);
-	
+	// Add Dexter tools menu
+	{
+		UToolMenu* menu = UToolMenus::Get()->ExtendMenu("LevelEditor.MainMenu");
+		FToolMenuSection& section = menu->FindOrAddSection(NAME_None);
+
+		FToolMenuEntry& build_entry =
+			section.AddSubMenu(
+				"Dexter",
+				FText::FromString("Dexter Tools"),
+				FText::FromString("Dexter Tools Tooltip"),
+				FNewToolMenuChoice()
+			);
+
+		build_entry.InsertPosition = FToolMenuInsert("Help", EToolMenuInsertType::Before);
+
+		static const FName dexter_menu_name = "LevelEditor.MainMenu.Dexter";	
+		UToolMenu* dexter_menu = UToolMenus::Get()->RegisterMenu(dexter_menu_name);
+
+		FToolMenuSection& dexter_menu_section = dexter_menu->AddSection(TEXT("Stage Tools"), LOCTEXT("Stage Tools", "Stage Tools"));
+		FToolMenuEntry& build_entry_asd = dexter_menu_section.AddMenuEntry(
+			"Validation Framework",
+			FText::FromString("Open the validation framework UI"),
+			FText(),
+			FSlateIcon(),
+			FUIAction(FExecuteAction::CreateRaw(this, &FValidationFrameworkModule::OpenValidationFrameworkCB))
+		);
+	}
 }
 
 void FValidationFrameworkModule::ShutdownModule()
