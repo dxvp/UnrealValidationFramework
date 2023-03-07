@@ -108,7 +108,7 @@ void FValidationFrameworkModule::FillSubmenu(FMenuBuilder& MenuBuilder) const
 void FValidationFrameworkModule::OpenValidationFrameworkCB() const
 {
     UObject * Blueprint = UEditorAssetLibrary::LoadAsset(
-    	FString(TEXT("/ValidationFramework/Blueprints/VP_ValidationFramework.VP_ValidationFramework"))
+    	FString(TEXT("/ValidationFramework/Blueprints/VP_ValidationFramework_V2.VP_ValidationFramework_V2"))
     );
 
 	if(IsValid(Blueprint))
