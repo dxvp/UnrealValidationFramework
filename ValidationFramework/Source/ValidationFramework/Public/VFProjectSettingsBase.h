@@ -53,4 +53,7 @@ public:
 	*/
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Validation Framework Settings")
 	FOpenColorIOColorConversionSettings ProjectOpenIOColorConfig;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Validation Framework Settings")
+	TArray<TSubclassOf<AActor>> DuplicationCheckActors;
 };

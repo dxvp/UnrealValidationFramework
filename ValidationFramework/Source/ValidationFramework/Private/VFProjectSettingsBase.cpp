@@ -17,7 +17,12 @@ limitations under the License.
 
 #include "VFProjectSettingsBase.h"
 
-UVFProjectSettingsBase::UVFProjectSettingsBase()
+UVFProjectSettingsBase::UVFProjectSettingsBase() : 
+	DuplicationCheckActors({
+		ADisplayClusterRootActor::StaticClass(),
+		APostProcessVolume::StaticClass(),
+		ASkyLight::StaticClass()
+	})
 {
 	ProjectFrameRate = FFrameRate(24, 1);
 }
