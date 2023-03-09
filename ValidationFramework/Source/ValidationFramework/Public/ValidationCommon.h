@@ -133,7 +133,8 @@ enum class EValidationWorkflow : uint8
 	ICVFX			UMETA(DisplayName = "ICVFX"),
 	VRScouting		UMETA(DisplayName = "VR Scouting"),
 	SimulCam		UMETA(DisplayName = "SimulCam"),
-	VAD				UMETA(DisplayName = "VAD")
+	VAD				UMETA(DisplayName = "VAD"),
+	Tutorial		UMETA(DisplayName = "Tutorial"),
 };
 
 /**
@@ -144,7 +145,8 @@ UENUM(BlueprintType)
 enum class EValidationScope : uint8
 {
 	Project		UMETA(DisplayName = "ProjectValidation"),
-	Level		UMETA(DisplayName = "LevelValidation")
+	Level		UMETA(DisplayName = "LevelValidation"),
+	Tutorial	UMETA(DisplayName = "Tutorial"),
 };
 
 /**
