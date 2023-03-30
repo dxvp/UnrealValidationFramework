@@ -25,7 +25,7 @@ FValidationResult UValidation_Level_NDisplay_ZeroPoint::Validation_Implementatio
 		return FValidationResult(EValidationStatus::Pass, TEXT("nDisplay 액터가 제로포인트에 있습니다."));
 	}
 
-	return FValidationResult(EValidationStatus::Fail, TEXT("nDisplay 액터가 제로포인트에 있지 않습니다."));
+	return FValidationResult(EValidationStatus::Warning, TEXT("nDisplay 액터가 제로포인트에 있지 않습니다."));
 }
 
 FValidationFixResult UValidation_Level_NDisplay_ZeroPoint::Fix_Implementation()
