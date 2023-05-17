@@ -27,8 +27,6 @@ limitations under the License.
 #include "ValidationBPLibrary.h"
 #include "VFProjectSettingsBase.h"
 
-
-
 UValidation_Level_NDisplay_OCIO::UValidation_Level_NDisplay_OCIO()
 {
 	ValidationName = TEXT("NDisplay - OCIO 설정");
@@ -95,15 +93,15 @@ void UValidation_Level_NDisplay_OCIO::ValidateAllViewportOCIOSetups(
 	const FOpenColorIOColorConversionSettings ProjectOCIOSettings,
 	FString OCIOObjectName, const FDisplayClusterConfigurationICVFX_StageSettings StageSettings)
 {
-	if (!StageSettings.bUseOverallClusterOCIOConfiguration)
+	if (!StageSettings.ViewportOCIO.AllViewportsOCIOConfiguration.bIsEnabled)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
 		ValidationResult.Message += OCIOObjectName + TEXT("\n모든 NDisplay 뷰포트에 OCIO를 사용하도록 설정되어 있지 않음\n");
 	}
 		
 	FOpenColorIOColorConversionSettings AllViewPortsOCIOSettings = StageSettings.
+	                                                                ViewportOCIO.
 	                                                                AllViewportsOCIOConfiguration.
-	                                                                OCIOConfiguration.
 	                                                                ColorConfiguration;
 		
 	if (!AllViewPortsOCIOSettings.IsValid())
@@ -125,16 +123,16 @@ void UValidation_Level_NDisplay_OCIO::ValidatePerViewportOCIOOverrideSetups(
 	FValidationResult& ValidationResult, const FOpenColorIOColorConversionSettings ProjectOCIOSettings,
 	FString OCIOObjectName, const FDisplayClusterConfigurationICVFX_StageSettings StageSettings)
 {
-	for (int Viewport_Idx = 0; Viewport_Idx < StageSettings.PerViewportOCIOProfiles.Num(); Viewport_Idx++)
+	for (int Viewport_Idx = 0; Viewport_Idx < StageSettings.ViewportOCIO.PerViewportOCIOProfiles.Num(); Viewport_Idx++)
 	{
 		
-		if (StageSettings.PerViewportOCIOProfiles[Viewport_Idx].bIsEnabled)
+		if (StageSettings.ViewportOCIO.PerViewportOCIOProfiles[Viewport_Idx].bIsEnabled)
 		{
 				
 			FOpenColorIOColorConversionSettings PerViewPortOCIOSettings = StageSettings.
-			                                                              PerViewportOCIOProfiles[Viewport_Idx].
-			                                                              OCIOConfiguration.
-			                                                              ColorConfiguration;
+																			ViewportOCIO.
+																			PerViewportOCIOProfiles[Viewport_Idx].
+																			ColorConfiguration;
 
 			if (!PerViewPortOCIOSettings.IsValid())
 			{
@@ -169,14 +167,14 @@ void UValidation_Level_NDisplay_OCIO::ValidateInnerFrustumOCIOSetups(
 	FValidationResult& ValidationResult, const FOpenColorIOColorConversionSettings ProjectOCIOSettings,
 	FString ComponentName, FDisplayClusterConfigurationICVFX_CameraSettings Icvfx_CameraSettings)
 {
-	if (!Icvfx_CameraSettings.AllNodesOCIOConfiguration.bIsEnabled)
+	if (!Icvfx_CameraSettings.CameraOCIO.AllNodesOCIOConfiguration.bIsEnabled)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
 		ValidationResult.Message += ComponentName + TEXT("\n이너프러스텀의 OCIO 설정이 되어있지 않음\n");
 	}
 	FOpenColorIOColorConversionSettings InnerFrustumOCIOConfig = Icvfx_CameraSettings
+		.CameraOCIO
 		.AllNodesOCIOConfiguration
-		.OCIOConfiguration
 		.ColorConfiguration;
 			
 	if (!InnerFrustumOCIOConfig.IsValid())
@@ -197,9 +195,9 @@ void UValidation_Level_NDisplay_OCIO::ValidateInnerFrustumOCIOPerNodeSetups(
 	const FOpenColorIOColorConversionSettings ProjectOCIOSettings,
 	FString ComponentName, FDisplayClusterConfigurationICVFX_CameraSettings Icvfx_CameraSettings)
 {
-	for (int PerNodeIndex = 0; PerNodeIndex < Icvfx_CameraSettings.PerNodeOCIOProfiles.Num(); PerNodeIndex++)
+	for (int PerNodeIndex = 0; PerNodeIndex < Icvfx_CameraSettings.CameraOCIO.PerNodeOCIOProfiles.Num(); PerNodeIndex++)
 	{
-		if(!Icvfx_CameraSettings.PerNodeOCIOProfiles[PerNodeIndex].bIsEnabled)
+		if(!Icvfx_CameraSettings.CameraOCIO.PerNodeOCIOProfiles[PerNodeIndex].bIsEnabled)
 		{
 			if(ValidationResult.Result > EValidationStatus::Warning)
 			{
@@ -212,8 +210,8 @@ void UValidation_Level_NDisplay_OCIO::ValidateInnerFrustumOCIOPerNodeSetups(
 		else
 		{
 			FOpenColorIOColorConversionSettings InnerFrustumPerNodeOCIOConfig = Icvfx_CameraSettings
+			.CameraOCIO
 			.PerNodeOCIOProfiles[PerNodeIndex]
-			.OCIOConfiguration
 			.ColorConfiguration;
 
 			if (!InnerFrustumPerNodeOCIOConfig.IsValid())

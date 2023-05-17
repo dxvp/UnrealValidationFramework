@@ -48,7 +48,11 @@ public class ValidationFramework : ModuleRules
 				"Niagara",
 				"MultiUserClient",
 				"Concert", "ConcertSyncClient",
-				"LiveLink", "LiveLinkInterface"
+				"LiveLink", "LiveLinkInterface",
+
+				"ActorLayerUtilities",
+				"MediaIOCore",			
+				"OpenColorIO",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
@@ -57,10 +61,10 @@ public class ValidationFramework : ModuleRules
 		{
 			PrivateDependencyModuleNames.Add("DisplayCluster");
 			PrivateDependencyModuleNames.Add("DisplayClusterConfiguration");
+			PrivateDependencyModuleNames.Add("DisplayClusterProjection");
 			PrivateDependencyModuleNames.Add("WindowsTargetPlatform");
 
 		}
-		
 		
 		DynamicallyLoadedModuleNames.AddRange(
 			new string[]

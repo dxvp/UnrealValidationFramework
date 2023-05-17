@@ -1,6 +1,9 @@
 ﻿#include "Validation_Niagara_Deterministic.h"
 #include "NiagaraComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraEmitterHandle.h"
+#include "NiagaraSystem.h"
+#include "NiagaraEmitter.h"
 
 UValidation_Niagara_Deterministic::UValidation_Niagara_Deterministic()
 {
