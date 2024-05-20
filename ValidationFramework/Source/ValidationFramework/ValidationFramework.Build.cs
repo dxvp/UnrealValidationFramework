@@ -46,8 +46,7 @@ public class ValidationFramework : ModuleRules
 				"DerivedDataCache",
 				"CinematicCamera",
 				"Niagara",
-				"MultiUserClient",
-				"Concert", "ConcertSyncClient",
+				
 				"LiveLink", "LiveLinkInterface",
 
 				"ActorLayerUtilities",
