@@ -30,7 +30,7 @@ FValidationResult UValidation_PP_Project_Raytracing::Validation_Implementation()
 		ValidationResult.Result = EValidationStatus::Fail;
 		Message = TEXT("레이트레이싱 그림자가 프로젝트 설정에서 활성화되어 있음.\n");
 	}
-	else if (Settings->bEnableRayTracingSkylight_DEPRECATED)
+	else if (Settings->bEnableRayTracingSkylight)
 	{
 		ValidationResult.Result = EValidationStatus::Fail;
 		Message = TEXT("레이트레이싱 스카이라이트가 프로젝트 설정에서 활성화되어 있음.\n");
@@ -45,7 +45,7 @@ FValidationFixResult UValidation_PP_Project_Raytracing::Fix_Implementation()
 	URendererSettings* Settings = GetMutableDefault<URendererSettings>();
 	Settings->bEnableRayTracing = true;
 	Settings->bEnableRayTracingShadows = false;
-	Settings->bEnableRayTracingSkylight_DEPRECATED = false;
+	Settings->bEnableRayTracingSkylight = false;
 	Settings->SaveConfig();
 
 	FString Message = TEXT("프로젝트 레이트레이싱 설정을 변경함. 퍼포스에 서밋 필요.");
